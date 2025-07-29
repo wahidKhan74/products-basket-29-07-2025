@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { useState } from 'react';
 import Profile from './pages/Profile.jsx';
+import Home from './pages/Home.jsx';
 
 
 function App() {
@@ -17,6 +18,8 @@ function App() {
 
   const getElement = (path) => {
     switch (path) {
+       case '/':
+        return <Home />;
       case '/products':
         return (
           <ProtectedRoute isLoggedIn={isLoggedIn}>

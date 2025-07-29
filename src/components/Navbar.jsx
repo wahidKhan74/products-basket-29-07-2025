@@ -1,22 +1,24 @@
 import  { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { routes } from '../routes';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../features/auth/authSlice';
 
 //create nav bar component
 export default function Navbar() {
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // fake auth
+    const user = useSelector(state=>state.auth.user);
+    const dispatch = useDispatch();
+
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
     };
 
-     const toggleAuth = () => setIsLoggedIn(!isLoggedIn);
-
     const filteredRoutes = routes.filter(route => {
-        if (route.isPrivate && !isLoggedIn) return false; // Hide private routes
-        if (route.guestOnly && isLoggedIn) return false; // Hide guest-only routes
+        if (route.isPrivate && !user) return false; // Hide private routes
+        if (route.guestOnly && user) return false; // Hide guest-only routes
         return true; // Show all other routes
     });
     
@@ -47,7 +49,7 @@ export default function Navbar() {
               </Link>
             ))}
 
-            { isLoggedIn && (
+            { user && (
             <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
               <i className="fas fa-chart-line mr-1"></i>
               <span id="productCount">0</span> Products
@@ -55,12 +57,13 @@ export default function Navbar() {
             )}
 
 
+            { user && (
             <button
-              onClick={toggleAuth}
+              onClick={() => dispatch(logout())}
               className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-200"
-            >
-              {isLoggedIn ? 'Logout' : 'Mock Login'}
+            > Logout
             </button>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -88,12 +91,14 @@ export default function Navbar() {
                 {route.label}
               </Link>
             ))}
+
+            { user && (
             <button
-              onClick={toggleAuth}
-              className="block w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-50"
-            >
-              {isLoggedIn ? 'Logout' : 'Mock Login'}
+              onClick={() => dispatch(logout())}
+              className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700 hover:bg-gray-200"
+            > Logout
             </button>
+            )}
           </div>
         )}
       </div>
