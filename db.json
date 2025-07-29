@@ -1,0 +1,47 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Apple iPhone 13",
+            "price": 799.99,
+            "description": "Latest model with A15 Bionic chip, 5G capable, and improved camera system.",
+            "imageUrl": "https://example.com/images/iphone13.jpg"
+        },
+        {
+            "id": 2,
+            "name": "Samsung Galaxy S21",
+            "price": 699.99,
+            "description": "High-performance smartphone with Dynamic AMOLED display and triple camera setup.",
+            "imageUrl": "https://example.com/images/galaxys21.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Google Pixel 6",
+            "price": 599.99,
+            "description": "Stock Android experience with excellent camera capabilities and Google Tensor chip.",
+            "imageUrl": "https://example.com/images/pixel6.jpg"
+        }
+    ],
+    "users": [
+        {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@exampl.com",
+            "password": "password_123",
+            "address": "123 Main St, Springfield, USA",
+            "phone": "+1234567890",
+            "role": "customer",
+            "createdAt": "2023-01-01T12:00:00Z"
+        },
+        {
+            "id": 2,
+            "name": "Jane Smith",
+            "email": "jane@example.com",
+            "password": "password_456",
+            "address": "456 Elm St, Springfield, USA",
+            "phone": "+0987654321",
+            "role": "admin",
+            "createdAt": "2023-01-02T12:00:00Z"
+        }
+    ]
+}
