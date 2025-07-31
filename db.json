@@ -19,6 +19,18 @@
       "price": 599.99,
       "description": "Stock Android experience with excellent camera capabilities and Google Tensor chip.",
       "id": "3"
+    },
+    {
+      "name": "High Excel Gaming Laptop",
+      "price": 799.99,
+      "description": "High Excel Gaming Laptop with advanced cooling and ultra-fast graphics for elite gamers...",
+      "id": "f985"
+    },
+    {
+      "id": "7c6d",
+      "name": "Premium Smartphone",
+      "price": 677,
+      "description": "Premium Smartphone Premium Smartphone Premium Smartphone"
     }
   ],
   "users": [

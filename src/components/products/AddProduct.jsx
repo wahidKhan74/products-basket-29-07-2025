@@ -4,6 +4,8 @@ import { addProduct, fetchProductById, updateProduct } from '../../api/products-
 import { cancelEditing, setEditingProduct } from '../../features/products/productsSlice';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 export default function AddProduct() {
 
@@ -11,13 +13,29 @@ export default function AddProduct() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const editingProduct = useSelector((state) => state.products.editingProduct);
 
-    const [formData, setFormData] = useState({
+      const [initialValues, setInitialValues] = useState({
         name: '',
         price: '',
         description: '',
-    });
+      });
+
+    
+    const validationSchema  = Yup.object({
+      name: Yup.string()
+      .required('Product Name is required')
+      .min(3, "Product name should have minimum 3 characters"),
+
+      price: Yup.number()
+      .required('Product price is required')
+      .positive("Product price must be positive value."),
+
+      description: Yup.string()
+      .required('Product description is required')
+      .min(20, "Description should have minimum 20 characters.")
+    })
 
     // Effect to set form data when editingProduct changes
       useEffect(() => {
@@ -32,23 +50,23 @@ export default function AddProduct() {
 
     useEffect(() => {
         if (editingProduct) {
-            setFormData({
-                name: editingProduct.name,
-                price: editingProduct.price,
-                description: editingProduct.description,
-            });
-        } else {
-            setFormData({
-                name: '',
-                price: '',
-                description: '',
-            });
-        }
+           setInitialValues({
+            name: editingProduct.name || '',
+            price: editingProduct.price || '',
+            description: editingProduct.description || '',
+          });
+      } else {
+        setInitialValues({
+          name: '',
+          price: '',
+          description: '',
+        });
+      }
     }, [editingProduct]);
 
     // Function to handle form submission (editing or adding a product)
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (formData, { resetForm }) => {
+       setIsSubmitted(true);
         if (editingProduct) {
             // Dispatch update action
             dispatch(updateProduct({ ...formData, id: editingProduct.id }));
@@ -56,56 +74,75 @@ export default function AddProduct() {
             // Dispatch add action
             dispatch(addProduct(formData));
         }
-        // Reset form after submission
-        setFormData({ name: '', price: '', description: '' });
-        navigate(`/products`);
+        
+       resetForm(); // reset form 
+       navigate(`/products`);
     };
 
-    // Function to handle input changes
-    const handleChange =(e) =>{
-        setFormData((prev)=> ({ ...prev, [e.target.id] : e.target.value }));
-    }
-
     // This component can be used to add a new product
-
     return (
         <div className="max-w-2xl mx-auto mb-10 mt-20">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-xl border border-gray-200 hover:shadow-2xl transition-shadow duration-300">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-          <i className="fas fa-plus-circle text-blue-500 mr-3"></i>
-          <span>{editingProduct ? 'Edit Product' : 'Add New Product'}</span>
-        </h2>
-        <div className="grid md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="name">
-              <i className="fas fa-tag mr-2"></i>Product Name
-            </label>
-            <input type="text" id="name" value={formData.name} onChange={handleChange} required className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2" placeholder="Enter product name" />
+         <Formik initialValues={initialValues} validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+            enableReinitialize={true} // important!
+          >
+             {({ isSubmitting }) => (
+        <Form className="bg-white p-8 rounded-2xl shadow-xl border border-gray-200 hover:shadow-2xl transition-shadow duration-300">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+            <i className="fas fa-plus-circle text-blue-500 mr-3"></i>
+            <span>{editingProduct ? 'Edit Product' : 'Add New Product'}</span>
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="name">
+                <i className="fas fa-tag mr-2"></i>Product Name
+              </label>
+              <Field name="name" id="name" className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2" placeholder="Enter product name" />
+              <ErrorMessage name="name" component="div" className="text-red-600 text-sm mt-1" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="price">
+                <i className="fas fa-dollar-sign mr-2"></i>Price
+              </label>
+              <Field
+                  name="price"
+                  type="number"
+                  id="price"
+                  step="0.01"
+                  placeholder="0.00"
+                  className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2"
+                />
+                <ErrorMessage name="price" component="div" className="text-red-600 text-sm mt-1" />
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="price">
-              <i className="fas fa-dollar-sign mr-2"></i>Price
+          <div className="mb-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="description">
+              <i className="fas fa-align-left mr-2"></i>Description
             </label>
-            <input type="number" id="price" step="0.01" value={formData.price} onChange={handleChange} required className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2" placeholder="0.00" />
+            <Field
+                as="textarea"
+                name="description"
+                id="description"
+                rows="4"
+                placeholder="Enter product description"
+                className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 resize-none"
+              />
+              <ErrorMessage name="description" component="div" className="text-red-600 text-sm mt-1" />
           </div>
-        </div>
-        <div className="mb-6">
-          <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="description">
-            <i className="fas fa-align-left mr-2"></i>Description
-          </label>
-          <textarea id="description" rows="4" value={formData.description} onChange={handleChange} required className="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 resize-none" placeholder="Enter product description"></textarea>
-        </div>
-        <div className="flex gap-3">
-          <button type="submit" className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transform hover:scale-105">
-            <i className="fas fa-save mr-2"></i>{editingProduct ? 'Update Product' : 'Save Product'}
-          </button>
-          {editingProduct && (
-            <button type="button" onClick={() => dispatch(cancelEditing())} className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105">
-              <i className="fas fa-times mr-2"></i>Cancel
+
+          <div className="flex gap-3">
+            <button type="submit" className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transform hover:scale-105">
+              <i className="fas fa-save mr-2"></i>{editingProduct ? 'Update Product' : 'Save Product'}
             </button>
-          )}
-        </div>
-      </form>
+            {editingProduct && (
+              <button type="button" onClick={() => dispatch(cancelEditing())} className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105">
+                <i className="fas fa-times mr-2"></i>Cancel
+              </button>
+            )}
+          </div>
+        </Form>
+             )}
+        </Formik>
     </div>
     );
 }
