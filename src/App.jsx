@@ -10,11 +10,13 @@ import Register from './pages/Register';
 import { useState } from 'react';
 import Profile from './pages/Profile.jsx';
 import Home from './pages/Home.jsx';
+import { useSelector } from 'react-redux';
 
 
 function App() {
  
-   const [isLoggedIn] = useState(true); // make this dynamic later with real auth
+  const user = useSelector((state) => state.auth.user);
+  const isLoggedIn = !!user; // make this dynamic later with real auth
 
   const getElement = (path) => {
     switch (path) {
@@ -27,6 +29,12 @@ function App() {
           </ProtectedRoute>
         );
       case '/add-product':
+          return (
+          <ProtectedRoute isLoggedIn={isLoggedIn}>
+             <AddProduct />
+          </ProtectedRoute>
+        );
+      case '/edit-product/:id':
           return (
           <ProtectedRoute isLoggedIn={isLoggedIn}>
              <AddProduct />

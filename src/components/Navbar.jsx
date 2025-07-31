@@ -18,6 +18,7 @@ export default function Navbar() {
 
     const filteredRoutes = routes.filter(route => {
         if (route.isPrivate && !user) return false; // Hide private routes
+        if (!route.showInNav) return !user; // Hide showInNav routes 
         if (route.guestOnly && user) return false; // Hide guest-only routes
         return true; // Show all other routes
     });
