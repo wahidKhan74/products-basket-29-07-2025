@@ -11,6 +11,7 @@ import { useState } from 'react';
 import Profile from './pages/Profile.jsx';
 import Home from './pages/Home.jsx';
 import { useSelector } from 'react-redux';
+import Cart from './components/products/Cart.jsx';
 
 
 function App() {
@@ -48,6 +49,8 @@ function App() {
         );
       case '/login':
         return <Login />;
+      case '/cart':
+        return <Cart />;
       case '/register':
         return <Register />;
       default:

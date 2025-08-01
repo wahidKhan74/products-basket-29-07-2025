@@ -1,5 +1,5 @@
 import  { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { routes } from '../routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/auth/authSlice';
@@ -9,8 +9,12 @@ export default function Navbar() {
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const user = useSelector(state=>state.auth.user);
-    const dispatch = useDispatch();
 
+    const products = useSelector((state) => state.products.items);
+    const cartItems = useSelector(state=>state.cart.items);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
@@ -53,10 +57,19 @@ export default function Navbar() {
             { user && (
             <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
               <i className="fas fa-chart-line mr-1"></i>
-              <span id="productCount">0</span> Products
+              <span id="productCount">{products.length}</span> Products
             </div>
             )}
 
+            {user && (
+              <button
+                onClick={() => navigate('/cart')}
+                className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1"
+              >
+                <i className="fas fa-shopping-cart"></i>
+                <span id="cartItemCount">{cartItems.length}</span> in Cart
+              </button>
+            )}
 
             { user && (
             <button

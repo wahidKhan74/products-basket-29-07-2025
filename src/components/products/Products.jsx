@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct, fetchProducts } from '../../api/products-api';
-import { setEditingProduct } from '../../features/products/productsSlice';
 import { useNavigate } from 'react-router-dom';
 
 export default function Products() {

@@ -21,6 +21,13 @@ export const routes = [
         showInNav: false
     },
     {
+        path: '/cart',
+        label: 'Cart',
+        icon: 'fas fa-plus',
+        isPrivate: true,
+        showInNav: false
+    },
+    {
         path: '/edit-product/:id',
         label: 'Update Product',
         icon: 'fas fa-edit',
