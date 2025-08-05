@@ -34,3 +34,6 @@ If you are developing a production application, we recommend using TypeScript wi
 
 > src/setupTests.js
 `import '@testing-library/jest-dom';`
+
+> add test script in package.json file 
+` "test": "jest"`
