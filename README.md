@@ -10,3 +10,27 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Jest Test configuration setup
+> npm install --save-dev jest babel-jest @babel/core @babel/preset-env @babel/preset-react jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom @testing-library/user-event
+
+> jest.config.cjs
+`module.exports = {
+  testEnvironment: "jest-environment-jsdom",
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+  moduleFileExtensions: ["js", "jsx"],
+  transform: {
+    "^.+\\.jsx?$": "babel-jest"
+  }
+};`
+
+> .babelrc
+`{
+  "presets": [
+    ["@babel/preset-env"],
+    ["@babel/preset-react", { "runtime": "automatic" }]
+  ]
+}`
+
+> src/setupTests.js
+`import '@testing-library/jest-dom';`

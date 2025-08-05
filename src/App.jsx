@@ -12,6 +12,7 @@ import Profile from './pages/Profile.jsx';
 import Home from './pages/Home.jsx';
 import { useSelector } from 'react-redux';
 import Cart from './components/products/Cart.jsx';
+import Header from './components/header/Header.jsx';
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
 
   return (
      <>
+     <Header />
       <Navbar />
         <Routes>
           {routes.map((route) => (
