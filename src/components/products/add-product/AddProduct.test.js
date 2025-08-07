@@ -96,7 +96,7 @@ describe('Add Product component' ,() =>{
 
     it('displays Edit Product when editingProduct exists', async ()=>{
 
-         const mockProduct =  {
+        const mockProduct =  {
             id: 1,
             name: "Test Product",
             price: 59.99,
@@ -109,7 +109,7 @@ describe('Add Product component' ,() =>{
         // Simulate thunk dispatch
         const mockDispatch = jest.fn((action) => {
             if (typeof action === 'function') {
-            return action(); // run thunk
+                return action(); // run thunk
             }
             return action;
         });
@@ -136,7 +136,7 @@ describe('Add Product component' ,() =>{
             element.tagName.toLowerCase() === 'span' && /Edit Product/i.test(content)
         )).toBeInTheDocument();
 
-         await waitFor(() =>
+        await waitFor(() =>
             expect(screen.getByDisplayValue('Test Product')).toBeInTheDocument()
         );
         // expect(await  screen.getByDisplayValue('59.99')).toBeInTheDocument();

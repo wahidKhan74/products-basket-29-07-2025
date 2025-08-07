@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart } from '../../features/products/cartSlice'; // Add this action to cartSlice
+import { removeFromCart } from '../../../features/products/cartSlice'; // Add this action to cartSlice
 import { useNavigate } from 'react-router-dom';
 
 export default function Cart() {

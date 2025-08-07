@@ -1,17 +1,16 @@
 import './App.css'
 import Navbar from './components/Navbar'
-import { Route, Router, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { routes } from './routes';
 import Products from './components/products/Products.jsx';
 import AddProduct from './components/products/add-product/AddProduct';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import { useState } from 'react';
 import Profile from './pages/Profile.jsx';
 import Home from './pages/Home.jsx';
 import { useSelector } from 'react-redux';
-import Cart from './components/products/Cart.jsx';
+import Cart from './components/products/cart/Cart.jsx';
 import Header from './components/header/Header.jsx';
 
 
