@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import { addProduct, fetchProductById, updateProduct } from '../../api/products-api';
-import { cancelEditing, setEditingProduct } from '../../features/products/productsSlice';
+import { addProduct, fetchProductById, updateProduct } from '../../../api/products-api';
+import { cancelEditing, setEditingProduct } from '../../../features/products/productsSlice';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
